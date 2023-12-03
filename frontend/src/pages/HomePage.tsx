@@ -1,13 +1,13 @@
-import { Link } from 'react-router-dom';
-import { sampleProducts } from '../data';
-import { Col, Row } from 'react-bootstrap';
-import { Product } from '../types/Product';
-import { useEffect, useReducer } from 'react';
 import axios from 'axios';
-import { getError } from '../utils';
-import { ApiError } from '../types/ApiError';
+import { useEffect, useReducer } from 'react';
+import { Col, Row } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import ProductItem from '../components/ProductItem';
+import { ApiError } from '../types/ApiError';
+import { Product } from '../types/Product';
+import { getError } from '../utils';
 
 type State = { products: Product[]; loading: boolean; error: string };
 type Action =
@@ -53,17 +53,12 @@ export default function HomePage() {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <Row>
-      {sampleProducts.map((product) => (
+      <Helmet>
+        <title>Amazon</title>
+      </Helmet>
+      {products.map((product) => (
         <Col key={product.slug} sm={6} md={4} lg={3}>
-          <Link to={'/product/' + product.slug}>
-            <img
-              src={product.image}
-              alt={product.name}
-              className="product-image"
-            ></img>
-            <h2>{product.name}</h2>
-            <p>${product.price}</p>
-          </Link>
+          <ProductItem product={product} />
         </Col>
       ))}
     </Row>
